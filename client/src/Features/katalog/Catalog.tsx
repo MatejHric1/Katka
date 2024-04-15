@@ -12,9 +12,11 @@ export default function Catalog( ) {
 
   useEffect(() => {
     agent.Catalog.list()
-    .then(produkty => setProdukty(produkty))
-    .catch(error => console.log(error))
-    .finally(() => setLoading(false))
+    .then(produkty => { 
+      setProdukty(produkty) 
+    })
+      .catch(error => console.log(error))
+      .finally(() => setLoading(false));
   }, [])
 
   if (loading) return <LoandingComponent message='Načitavam...'/>
