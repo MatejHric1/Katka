@@ -29,12 +29,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(opt =>
 {
-    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+    opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000");
 });
 
-app.UseAuthorization();
-
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
@@ -45,7 +44,8 @@ try
 {
     context.Database.Migrate();
     DbInitializer.Initialize(context);
-}catch(Exception ex)
+}
+catch(Exception ex)
 {
     logger.LogError(ex,"Problem pri migrovani");
 }

@@ -8,6 +8,9 @@ namespace API.Data
         public StoreContext(DbContextOptions options) : base(options)
         {
         }
+        
         public DbSet<Produkt> Produkty { get; set; } 
+
+        public DbSet<Basket> Baskets { get; set; }
     }
 }

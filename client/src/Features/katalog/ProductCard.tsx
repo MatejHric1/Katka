@@ -1,12 +1,25 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
 import { Produkt } from "../../App/models/prodkuty";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import agent from "../../App/api/agent";
+import { LoadingButton } from "@mui/lab";
 
 interface Props {
     produkty: Produkt;
 }
 
 export default function ProductCard({ produkty }: Props) {
+    
+    const [loading, setLoading] = useState(false);
+
+    function handleAddItem(produktId: number) {
+        setLoading(true);
+        agent.Basket.addItem(produktId)
+            .catch(error => console.log(error))
+            .finally(() => setLoading (false));
+    }
+
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
@@ -34,8 +47,10 @@ export default function ProductCard({ produkty }: Props) {
                 </Typography>
             </CardContent>
             <CardActions>
-            <Button size="small">Pridať do košíka</Button>
-            <Button component={Link} to={`/catalog/${produkty.id}`} size="small">Náhlaď</Button>
+              <LoadingButton loading={loading} 
+                onClick={() => handleAddItem(produkty.id)} 
+                size="small">Pridať do košíka</LoadingButton>
+                <Button component={Link} to={`/catalog/${produkty.id}`} size="small">Náhlaď</Button>
             </CardActions>
       </Card>
     )
