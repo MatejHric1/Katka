@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { Produkt } from "../../App/models/prodkuty";
+import { Produkt } from "../../App/models/produkty";
 import ProductCard from "./ProductCard";
 
 

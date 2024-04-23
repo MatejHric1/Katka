@@ -1,9 +1,11 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
-import { Produkt } from "../../App/models/prodkuty";
+import { Produkt } from "../../App/models/produkty";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import agent from "../../App/api/agent";
 import { LoadingButton } from "@mui/lab";
+import { useStoreContext } from "../../App/context/StoreContext";
+import { currencyFormat } from "../../App/util/util";
 
 interface Props {
     produkty: Produkt;
@@ -12,10 +14,12 @@ interface Props {
 export default function ProductCard({ produkty }: Props) {
     
     const [loading, setLoading] = useState(false);
+    const {setBasket} = useStoreContext();
 
     function handleAddItem(produktId: number) {
         setLoading(true);
         agent.Basket.addItem(produktId)
+            .then(basket => setBasket(basket))
             .catch(error => console.log(error))
             .finally(() => setLoading (false));
     }
@@ -40,7 +44,7 @@ export default function ProductCard({ produkty }: Props) {
                 />
             <CardContent>
                 <Typography gutterBottom color='secondary' variant="h5" component="div">
-                    ${(produkty.cena / 100).toFixed(2)}
+                    {currencyFormat(produkty.cena)}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     {produkty.znacka} / {produkty.typ}
