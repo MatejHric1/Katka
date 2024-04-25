@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import agent from "../../App/api/agent";
 import { LoadingButton } from "@mui/lab";
-import { useStoreContext } from "../../App/context/StoreContext";
 import { currencyFormat } from "../../App/util/util";
+import { useDispatch } from "react-redux";
+import { setBasket } from "../basket/basketSlice";
 
 interface Props {
     produkty: Produkt;
@@ -14,12 +15,12 @@ interface Props {
 export default function ProductCard({ produkty }: Props) {
     
     const [loading, setLoading] = useState(false);
-    const {setBasket} = useStoreContext();
+    const dispatch = useDispatch();
 
     function handleAddItem(produktId: number) {
         setLoading(true);
         agent.Basket.addItem(produktId)
-            .then(basket => setBasket(basket))
+            .then(basket => dispatch(setBasket(basket)))
             .catch(error => console.log(error))
             .finally(() => setLoading (false));
     }
